@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor /* Lo que nos permite acceder a ver el usuario */
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AppWebAWAQ</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- Libreria para el icono de logout -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+
+<body>
+    <header>
+
+        <!-- Inicio de la nav bar -->
+        <nav class="navbar navbar-expand navbar-dark custom-nav mb-3 py-0">
+            <div class="container-fluid d-flex align-items-center" style="min-height: 60px;">
+                <a asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo-white-awaq.svg" style="width: 100px; height: auto;" />
+                </a>
+
+                    <!-- Lista desordenada en fila -->
+                    <ul class="navbar-nav d-flex flex-row me-auto ms-4 align-items-center"> <!-- me-auto agrega margen automatico a la derecha -->
+
+                        <!-- Le damos sombra al contenedor del texto, lo hacemos redondo y le damos padding a los lados (x) -->
+                        <div class="offbar-div-with-hover-shadow rounded-3 text-center px-3">
+                            <li class="nav-item">
+                                <a class="nav-link link-awaq" asp-controller="GameScreen" asp-action="GameScreen">Pantalla de Juego</a>
+                            </li>
+                        </div>
+
+                        <div class="offbar-div-with-hover-shadow rounded-3 text-center px-3">
+                            <li class="nav-item">
+                                <a class="nav-link link-awaq" asp-controller="Store" asp-action="Store">Tienda</a>
+                            </li>
+                        </div>
+
+                        <div class="offbar-div-with-hover-shadow rounded-3 text-center px-3">
+                            <li class="nav-item">
+                                <a class="nav-link link-awaq" asp-controller="InfoUser" asp-action="DetallesUsuario">Perfil de Usuario</a>
+                            </li>
+                        </div>
+                    </ul>
+
+                    <!-- Contenedor del user y el boton de logout-->
+                    <div class="d-flex align-items-center">
+
+                        <!-- Se muestra el usuario en sesion -->
+                        <small class="text-white">
+                            @(HttpContextAccessor.HttpContext?.Session.GetString("UserSession") ?? "Usuario")
+                        </small>
+
+                        <!-- Boton trigger del modal -->
+                        <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal"> 
+                            <i class="bi bi-box-arrow-right text-white fs-3"></i> 
+                        </button>
+                    </div>
+            </div>
+        </nav>
+        <!-- Fin de la nav bar -->
+    </header>
+
+<!-- Modal de logout -->
+    <div class="modal fade" id="logoutModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Titulo del modal y boton para cerrar -->
+                <div class="modal-header custom-nav text-white">
+                    <h5 class="modal-title" id="logoutModalLabel">Confirmación</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Seccion de texto del modal -->
+                <div class="modal-body text-center py-4">
+                    ¿Estás seguro de que deseas cerrar sesión?
+                </div>
+
+                <!-- Botones centrados-->
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a class="btn btn-danger" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <main role="main">
+            @RenderBody() <!-- Render a la pagina (Esto porque este archivo es solo el layout xd) -->
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
