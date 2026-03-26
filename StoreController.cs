@@ -11,14 +11,15 @@ namespace AppWebAWAQ.Controllers
         public IActionResult Store(string searchQuery) // Acción para mostrar la tienda
             {
                 var products = GetProducts(); 
-
+                
                 foreach (var product in products) // Marcar los productos comprados como no disponibles
                 {
                     if (purchasedItems.Contains(product.Id))
                     {
                         product.IsAvailable = false; 
                     }
-                
+
+                    //TODO: Cambiar cascada de ifs por una logica for
                     if(product.Id == 1)
                     {
                         product.IsUnlocked = true;
@@ -71,6 +72,7 @@ namespace AppWebAWAQ.Controllers
                 }
 
                 bool isUnlocked = false;
+                //TODO: Cambiar cascada de ifs por una logica for
                 if(product.Id == 1)
                 {
                     isUnlocked = true;
