@@ -7,6 +7,7 @@ namespace AppWebAWAQ.Models
         public string SearchQuery { get; set; }
         public int UserCoins { get; set; }
     }
+    //TODO: Mover clase Product a otro .cs (Ej. ProductViewModel.cs) para mantener coherencia con estandares HeladoObscuro
     public class Product
     {
         public int Id { get; set; }
