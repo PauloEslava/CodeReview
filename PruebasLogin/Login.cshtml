@@ -1,0 +1,37 @@
+@model AppWebAWAQ.Models.LoginViewModel /* Usamos el LoginViewModel */
+
+@{
+    ViewData["Title"] = "Inicio de sesion"; /* titulo de la pestaña */
+    Layout = "_LoginLayout"; /* Utilizamos el layout exclusivo de login (sin el menu offbar) */
+}
+
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="col-md-4"> <!-- Tomamos cuatro de los doce espacios -->
+        
+        <div class="d-flex justify-content-center mb-4">
+            <img src="~/images/LogoACIForestGreen.png" style="height: 150px; width: auto;">
+        </div>
+
+        <form asp-action="Login" method="post" class="p-4 border rounded shadow-lg bg-white">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!--ModelOnly es para errores no especificos, como dejarlo vacio -->
+            
+            <div class="form-floating mb-3"> 
+                <input asp-for="Username" class="form-control" placeholder=""/> <!-- Este input es lo que toma el modelo de C# (Model Boinding) -->
+                <label>Correo electrónico</label>
+                <span asp-validation-for="Username" class="text-danger"></span> <!-- Si se queda vacio el campo, se muestra una alerta -->
+            </div>
+
+            <div class="form-floating mb-3"> 
+                <input asp-for="Password" class="form-control" placeholder=""/>
+                <label>Contraseña</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="w-100 btn-login btn">Iniciar sesión</button> <!-- El boton de login -->
+            <div class="d-flex flex-column text-center"> <!-- Contenedor para los links de recuperacion y creacion -->
+            <a href="#" class="pt-3 pb-1 link-login">Olvidé mi contraseña</a>
+            <a href="#" class="pt-1 pb-1 link-login">Crear cuenta</a>
+            </div>
+        </form>
+    </div>
+</div>
