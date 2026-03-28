@@ -1,0 +1,111 @@
+@model AppWebAWAQ.Models.UsuarioViewModel
+
+@{
+    ViewData["Title"] = "Editar Perfil";
+    var Redes_Sociales = new List<string> { "LinkedIn", "Facebook", "Instagram", "Otro" };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-5" style = "margin-top: 3.5rem"> <!-- espacio donde tenemos titulo y boton de volver a perfil -->
+    <h1 class="fw-bold"> Editar Perfil de Usuario </h1>
+    <a asp-action="DetallesUsuario" class="btn btn-secondary btn-lg">Regresar a Perfil</a>
+</div>
+
+<form asp-action="EditarUsuario" method="post" novalidate>
+    <div class="row"> <!-- espacio para editar la foto de perfil e info de usuario (nombre, contacto, etc.) -->
+        <div class="col-4 mt-3"> <!-- foto de perfil -->
+            <!-- guarda la liga a la imagen seleccionada, sin mostrarse en pantalla -->
+            <input type="hidden" name="LigaFotoPerfil" id="avatarSeleccionado" value="@Model.LigaFotoPerfil"> 
+            <img src="@Url.Content(Model.LigaFotoPerfil)" class="rounded-4 img-fluid"  id="avatarVista">
+            <button type="button" class="btn btn-secondary btn-sm mt-3 w-100" data-bs-toggle="collapse" data-bs-target="#avatarMenu">
+                Cambiar Avatar
+            </button>
+            <!-- menu colapsable con avatares -->
+            <div class="collapse mt-3" id="avatarMenu">
+                <div class="card p-3">
+                    <div class="d-flex flex-wrap gap-2">
+                        <img src="~/images/avtr_carpintero_cuello_rojo.jpg" class="rounded-4 avatar-option @(Model.LigaFotoPerfil == "~/images/avtr_carpintero_cuello_rojo.jpg" ? "avatar-seleccionado" : "")" onclick="selectAvatar(avatar_carpintero, '~/images/avtr_carpintero_cuello_rojo.jpg')">
+                        <img src="~/images/avtr_capibara.jpg" class="rounded-4 avatar-option @(Model.LigaFotoPerfil == "~/images/avtr_capibara.jpg" ? "avatar-seleccionado" : "")" onclick="selectAvatar(avatar_capibara, '~/images/avtr_capibara.jpg')">
+                        <img src="~/images/avtr_raya_motor.jpg" class="rounded-4 avatar-option @(Model.LigaFotoPerfil == "~/images/avtr_raya_motor.jpg" ? "avatar-seleccionado" : "")" onclick="selectAvatar(avatar_raya_motor, '~/images/avtr_raya_motor.jpg')">
+                        <img src="~/images/avtr_rana_venenosa_dorada.jpg" class="rounded-4 avatar-option @(Model.LigaFotoPerfil == "~/images/avtr_rana_venenosa_dorada.jpg" ? "avatar-seleccionado" : "")" onclick="selectAvatar(avatar_rana_dorada, '~/images/avtr_rana_venenosa_dorada.jpg')">
+                        <img src="~/images/avtr_guacamayo_escarlata.jpg" class="rounded-4 avatar-option @(Model.LigaFotoPerfil == "~/images/avtr_guacamayo_escarlata.jpg" ? "avatar-seleccionado" : "")" onclick="selectAvatar(avatar_guacamayo_escarlata, '~/images/avtr_guacamayo_escarlata.jpg')">
+                        <img src="~/images/avtr_anguila_electrica.jpg" class="rounded-4 avatar-option @(Model.LigaFotoPerfil == "~/images/avtr_anguila_electrica.jpg" ? "avatar-seleccionado" : "")" onclick="selectAvatar(avatar_anguila_electrica, '~/images/avtr_anguila_electrica.jpg')">
+                    </div>
+                </div>
+            </div>            
+        </div>
+        <div class="col-1"></div> <!-- division horizontal entre imagen e información-->
+        <div class="col-7"> <!-- info de usuario -->
+            <div> <!-- exclusivo para mantener bien el boton enviar y no empalmar con msj error -->
+                <h3 class="fw-bold mt-3">Nombre</h3>
+                <p>@Model.Nombre</p>
+                <h3 class="fw-bold mt-3">
+                    <label class="form-label">Información de Contacto</label>
+                </h3>
+                <div class="input-group"> <!-- Agrupamos para tener el texto de "numero celular" al lado del numero -->
+                    <span class="input-group-text">Número Celular:</span>
+                    <input type="text" class="form-control" name="Contacto_Numero" placeholder="Su número celular" value="@Model.Contacto_Numero">
+                </div>
+                <span asp-validation-for="Contacto_Numero" class="text-danger"></span>
+                <div class="input-group mt-3"> <!-- Agrupamos para tener el texto de "correo electronico" al lado del correo -->
+                    <span class="input-group-text">Correo Electrónico:</span>
+                    <input type="text" class="form-control" name="Correo_Electronico" placeholder="ejemplo@gmail.com" value="@Model.Correo_Electronico" required>
+                </div>
+                <span asp-validation-for="Correo_Electronico" class="text-danger"></span>
+                <h3 class="fw-bold mt-3">
+                    <label class="form-label">Biografía</label>
+                </h3>
+                <textarea class="form-control cont-bio-edit" name="Biografia" rows="10" style="" placeholder="Soy...">@Model.Biografia</textarea>
+                <h3 class="fw-bold mt-3">
+                    <label class="form-label">Enlaces</label>
+                </h3>
+                <div class="input-group"> <!-- Agrupamos para tener el texto de la red social al lado de la liga -->
+                    <select class="form-select cont-redes" name="Enlaces[0].Red_Social">
+                        <option value="<Ninguna>">Elija...</option>
+                        @foreach (var Nombre_Red in Redes_Sociales)
+                        {
+                            <option selected="@(Model.Enlaces[0].Red_Social == Nombre_Red ? "selected" : null)">@Nombre_Red</option>
+                        }
+                    </select>
+                    <input type="text" class="form-control flex-grow-1" name="Enlaces[0].Liga" placeholder="https://ejemplo.com/usuario" value="@Model.Enlaces[0].Liga">
+                </div>
+                <span asp-validation-for="Enlaces[0].Liga" class="text-danger"></span>
+                <div class="input-group mt-3"> <!-- Agrupamos para tener el texto de la red social al lado de la liga -->
+                    <select class="form-select cont-redes" name="Enlaces[1].Red_Social">
+                        <option value="<Ninguna>" selected>Elija...</option>
+                        @foreach (var Nombre_Red in Redes_Sociales)
+                        {
+                            <option selected="@(Model.Enlaces[1].Red_Social == Nombre_Red ? "selected" : null)">@Nombre_Red</option>
+                        }
+                    </select>
+                    <input type="text" class="form-control flex-grow-1" name="Enlaces[1].Liga" placeholder="https://ejemplo.com/usuario" value="@Model.Enlaces[1].Liga">
+                </div>
+                <span asp-validation-for="Enlaces[1].Liga" class="text-danger"></span>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success btn-lg mt-3">Guardar Cambios</button>
+            </div>
+        </div>  
+    </div>
+</form> 
+
+<script>
+    /* todas las posibles rutas de imagenes con Url.Content() */
+    var avatar_carpintero = '@Url.Content("~/images/avtr_carpintero_cuello_rojo.jpg")'
+    var avatar_capibara = '@Url.Content("~/images/avtr_capibara.jpg")'
+    var avatar_raya_motor = '@Url.Content("~/images/avtr_raya_motor.jpg")'
+    var avatar_rana_dorada = '@Url.Content("~/images/avtr_rana_venenosa_dorada.jpg")'
+    var avatar_guacamayo_escarlata = '@Url.Content("~/images/avtr_guacamayo_escarlata.jpg")'
+    var avatar_anguila_electrica = '@Url.Content("~/images/avtr_anguila_electrica.jpg")'
+
+    /* cambiamos la vista de imagen en pantalla, y guardamos path para guardar en usuario */
+    function selectAvatar(UrlCont, path) {
+        /* quitamos seleccion de avatar previamente seleccionado */
+        const current = document.querySelector('.avatar-seleccionado');
+        if (current) current.classList.remove('avatar-seleccionado');
+        /* seleccionar al que se dio click */
+        event.target.classList.add('avatar-seleccionado');
+
+        document.getElementById('avatarVista').src =  UrlCont;
+        document.getElementById('avatarSeleccionado').value = path;
+    }
+</script>

@@ -1,0 +1,49 @@
+@model AppWebAWAQ.Models.UsuarioViewModel
+
+@{
+    ViewData["Title"] = "Detalles de Usuario";
+    string Display(string value) => string.IsNullOrEmpty(value) ? "<No hay información disponible>" : value;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-5" style = "margin-top: 3.5rem"> <!-- espacio donde tenemos titulo y boton de editar perfil -->
+    <h1 class="fw-bold"> Perfil de Usuario </h1>
+    <a asp-action="EditarUsuario" class="btn btn-success btn-lg">Editar Perfil</a>
+</div>
+
+<div class="row"> <!-- espacio donde tenemos la foto de perfil e info de usuario (nombre, contacto, etc.)-->
+    <div class="col-4 mt-3"> <!-- foto de perfil -->
+        <img src="@Url.Content(Model.LigaFotoPerfil)" class="rounded-4 img-fluid"> <!-- Url.Content nos permite leer de manera correcta la liga local de la foto -->
+    </div>
+    <div class="col-1"></div> <!-- division horizontal entre imagen e información-->
+    <div class="col-7"> <!-- info de usuario -->
+        <h3 class="fw-bold mt-3">Nombre</h3>
+        <p>@Model.Nombre</p>
+
+        <h3 class="fw-bold mt-3">Información de Contacto</h3>
+        <p>Número Celular: @Display(Model.Contacto_Numero)</p>
+        <p>Correo Electrónico: @Model.Correo_Electronico</p>
+
+        <h3 class="fw-bold mt-3">Biografía</h3> 
+        <p class="biografia">@Display(Model.Biografia)</p>
+
+        <h3 class="fw-bold mt-3">Enlaces</h3>
+        <dl> <!-- tipo de lista que te deja poner una palabra, y luego una definicion abajo de ella-->
+            <dt>@Model.Enlaces[0].Red_Social</dt>
+            <dd>
+                @if (string.IsNullOrEmpty(Model.Enlaces[0].Liga)){
+                    <p>&lt;No hay información disponible&gt;</p>
+                }else{
+                    <a href="@Model.Enlaces[0].Liga" target="_blank" class="text-decoration-none">@Model.Enlaces[0].Liga</a>
+                } 
+            </dd>
+            <dt>@Model.Enlaces[1].Red_Social</dt>
+            <dd>
+                @if (string.IsNullOrEmpty(Model.Enlaces[1].Liga)){
+                    <p>&lt;No hay información disponible&gt;</p>
+                }else{
+                    <a href="@Model.Enlaces[1].Liga" target="_blank" class="text-decoration-none">@Model.Enlaces[1].Liga</a>
+                } 
+            </dd>       
+        </dl>
+    </div>
+</div>
